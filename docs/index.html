@@ -1,0 +1,735 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Briefing de Identidade Visual — Studio REVI</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg:      #030917;
+      --bg-card: rgba(10,19,48,0.95);
+      --bg-input:rgba(6,14,36,0.8);
+      --grad:    linear-gradient(135deg,#1141BD,#4AA6F7);
+      --blue:    #1141BD;
+      --lblu:    #4AA6F7;
+      --t1:      #FFFFFF;
+      --t2:      #E8EBF8;
+      --t3:      rgba(202,205,224,0.82);
+      --t4:      rgba(202,205,224,0.45);
+      --border:  rgba(74,166,247,0.14);
+      --border-h:rgba(74,166,247,0.35);
+      --error:   #FF5B5B;
+      --r-sm:    10px;
+      --r-md:    14px;
+      --r-lg:    20px;
+      --r-xl:    28px;
+      --ease:    cubic-bezier(0.4,0,0.2,1);
+      --spring:  cubic-bezier(0.34,1.56,0.64,1);
+    }
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+    body{min-height:100vh;background:var(--bg);color:var(--t1);font-family:'Inter',-apple-system,sans-serif;-webkit-font-smoothing:antialiased;line-height:1.5}
+
+    /* SPLASH */
+    #splash{position:fixed;inset:0;z-index:9999;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:24px;background:var(--bg);transition:opacity .55s ease,visibility .55s ease}
+    #splash.fade-out{opacity:0;visibility:hidden;pointer-events:none}
+    .splash-logo{animation:splashIn .75s var(--spring) forwards;opacity:0}
+    @keyframes splashIn{from{opacity:0;transform:scale(.82) translateY(10px)}to{opacity:1;transform:scale(1) translateY(0)}}
+    .splash-bar{width:48px;height:2px;background:var(--border);border-radius:100px;overflow:hidden;opacity:0;animation:splashFI .3s .5s ease forwards}
+    .splash-bar-fill{height:100%;width:0%;background:var(--grad);border-radius:100px;animation:splashFill 1.1s .5s ease forwards}
+    @keyframes splashFill{from{width:0%}to{width:100%}}
+    @keyframes splashFI{to{opacity:1}}
+
+    /* HEADER */
+    .header{position:sticky;top:0;z-index:200;height:60px;background:rgba(3,9,23,.9);backdrop-filter:blur(20px) saturate(180%);-webkit-backdrop-filter:blur(20px) saturate(180%);border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;padding:0 32px}
+    .logo{display:flex;align-items:center;text-decoration:none}
+    .logo svg,.logo img{height:28px;width:auto}
+
+    /* PROGRESS */
+    .progress{display:flex;align-items:center;gap:4px}
+    .prog-pill{display:flex;align-items:center;font-size:11px;font-weight:800;padding:6px 14px;border-radius:100px;background:rgba(255,255,255,.06);color:var(--t3);transition:all .3s var(--spring);letter-spacing:.5px;cursor:default}
+    .prog-pill.active{background:var(--grad);color:#fff;box-shadow:0 3px 12px rgba(17,65,189,.4);transform:scale(1.05)}
+    .prog-pill.done{background:rgba(74,166,247,.15);color:var(--lblu)}
+    .prog-sep{width:12px;height:1px;background:var(--border)}
+
+    /* MAIN */
+    .main{min-height:100dvh;display:flex;flex-direction:column}
+
+    /* SECTION */
+    .form-section{display:none;position:relative;flex:1;padding:40px 24px 60px}
+    .form-section.active{display:block}
+    .form-section.active .section-card{animation:enterCard .55s var(--spring) both}
+    @keyframes enterCard{from{opacity:0;transform:translateY(28px) scale(.985);filter:blur(2px)}to{opacity:1;transform:translateY(0) scale(1);filter:blur(0)}}
+    .form-section.slide-out-left{animation:slideOL .28s ease forwards}
+    .form-section.slide-in-right{animation:slideIR .35s var(--spring) forwards}
+    .form-section.slide-out-right{animation:slideOR .28s ease forwards}
+    .form-section.slide-in-left{animation:slideIL .35s var(--spring) forwards}
+    @keyframes slideOL{to{opacity:0;transform:translateX(-40px) scale(.97)}}
+    @keyframes slideIR{from{opacity:0;transform:translateX(40px) scale(.97)}}
+    @keyframes slideOR{to{opacity:0;transform:translateX(40px) scale(.97)}}
+    @keyframes slideIL{from{opacity:0;transform:translateX(-40px) scale(.97)}}
+
+    .section-card{max-width:800px;margin:0 auto;border-radius:var(--r-xl);background:var(--bg-card);border:1px solid var(--border);box-shadow:0 24px 64px rgba(0,0,0,.4),0 0 0 1px rgba(74,166,247,.05) inset;overflow:hidden}
+    .section-hd{padding:40px 48px 36px;border-bottom:1px solid var(--border);position:relative;overflow:hidden}
+    .section-hd::before{content:attr(data-num);position:absolute;right:32px;top:-8px;font-size:160px;font-weight:900;letter-spacing:-12px;color:rgba(74,166,247,.04);line-height:1;user-select:none;pointer-events:none}
+    .section-eyebrow{font-size:10px;font-weight:700;letter-spacing:2.5px;text-transform:uppercase;color:var(--lblu);margin-bottom:10px}
+    .section-title{font-size:clamp(24px,4vw,38px);font-weight:800;letter-spacing:-1px;color:var(--t1);line-height:1.08;margin-bottom:10px}
+    .section-desc{font-size:15px;color:var(--t3);line-height:1.65;max-width:520px}
+    .section-body{padding:40px 48px}
+    .questions{display:flex;flex-direction:column;gap:36px}
+    .section-ft{padding:24px 48px 32px;border-top:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;gap:16px}
+
+    /* QUESTION */
+    .q-label-row{display:flex;align-items:center;gap:8px;margin-bottom:5px;flex-wrap:wrap}
+    .q-label{font-size:15px;font-weight:600;color:var(--t2);letter-spacing:-.1px;line-height:1.4}
+    .q-req{display:inline-flex;align-items:center;padding:2px 8px;border-radius:100px;background:rgba(74,166,247,.15);color:var(--lblu);font-size:9px;font-weight:800;letter-spacing:.8px;text-transform:uppercase}
+    .q-hint{font-size:13px;color:var(--t4);line-height:1.55;margin-bottom:12px}
+
+    /* INPUTS */
+    .field{width:100%;display:block;background:var(--bg-input);border:1px solid var(--border);border-radius:var(--r-md);padding:14px 16px;font-size:15px;font-family:'Inter',sans-serif;font-weight:400;color:var(--t1);outline:none;caret-color:var(--lblu);transition:all .2s var(--ease);-webkit-appearance:none;appearance:none;margin-top:4px}
+    .field::placeholder{color:var(--t4);font-weight:300}
+    .field:focus{background:rgba(8,18,50,.9);border-color:var(--lblu);box-shadow:0 0 0 3px rgba(74,166,247,.12)}
+    .field.has-error{border-color:var(--error);box-shadow:0 0 0 3px rgba(255,91,91,.1)}
+    textarea.field{resize:none;min-height:120px;line-height:1.65;font-size:14px}
+
+    /* ERROR */
+    .err-msg{font-size:11px;font-weight:500;color:var(--error);margin-top:6px;opacity:0;transform:translateY(-3px);transition:opacity .18s,transform .18s;pointer-events:none;min-height:16px}
+    .err-msg.show{opacity:1;transform:translateY(0)}
+
+    /* SHALLOW HINT */
+    .shallow-hint{display:none;margin-top:10px;padding:14px 16px;background:rgba(255,59,48,.07);border:1px solid rgba(255,59,48,.28);border-radius:var(--r-md);gap:10px;align-items:flex-start}
+    .shallow-hint.show{display:flex;animation:shallowIn .3s var(--ease) both}
+    @keyframes shallowIn{from{opacity:0;transform:translateY(-6px)}to{opacity:1;transform:translateY(0)}}
+    .shallow-icon{font-size:15px;flex-shrink:0;margin-top:2px}
+    .shallow-content{flex:1}
+    .shallow-msg{font-size:12px;font-weight:700;color:#FF5B5B;margin-bottom:5px}
+    .shallow-ex{font-size:12px;color:rgba(255,180,180,.82);line-height:1.65;white-space:pre-line}
+    .shallow-close{background:none;border:none;cursor:pointer;color:rgba(255,100,100,.4);font-size:18px;padding:0 2px;flex-shrink:0;line-height:1;transition:color .15s}
+    .shallow-close:hover{color:rgba(255,180,180,.9)}
+
+    /* OPT CARDS */
+    .opts-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin-top:4px}
+    .opts-grid.col1{grid-template-columns:1fr}
+    .opts-grid.col3{grid-template-columns:repeat(3,1fr)}
+    .opt-card{display:flex;align-items:center;gap:12px;padding:13px 16px;background:rgba(255,255,255,.03);border:1px solid var(--border);border-radius:var(--r-md);cursor:pointer;user-select:none;transition:background .16s,border-color .16s,transform .16s,box-shadow .16s;-webkit-tap-highlight-color:transparent;min-height:48px}
+    .opt-card:hover{background:rgba(74,166,247,.07);border-color:var(--border-h);transform:translateY(-1px)}
+    .opt-card:active{transform:translateY(0) scale(.98)}
+    .opt-card.chosen{background:rgba(17,65,189,.18);border-color:var(--lblu);box-shadow:0 0 0 1px rgba(74,166,247,.25),0 4px 16px rgba(17,65,189,.18)}
+    .opt-radio{width:18px;height:18px;border-radius:50%;border:1.5px solid var(--border-h);display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:border-color .16s,background .16s;background:rgba(255,255,255,.04)}
+    .opt-radio-dot{width:7px;height:7px;border-radius:50%;background:var(--lblu);transform:scale(0);transition:transform .22s var(--spring)}
+    .opt-card.chosen .opt-radio{border-color:var(--lblu);background:rgba(74,166,247,.1)}
+    .opt-card.chosen .opt-radio-dot{transform:scale(1)}
+    .opt-label{font-size:14px;font-weight:500;color:var(--t2);line-height:1.35;transition:color .16s}
+    .opt-card.chosen .opt-label{color:#fff}
+    .opt-box{width:18px;height:18px;border-radius:5px;border:1.5px solid var(--border-h);display:flex;align-items:center;justify-content:center;flex-shrink:0;background:rgba(255,255,255,.04);transition:all .16s}
+    .opt-box svg{opacity:0;transform:scale(.3);transition:opacity .18s,transform .22s var(--spring)}
+    .opt-card.chosen .opt-box{border-color:var(--lblu);background:rgba(74,166,247,.15)}
+    .opt-card.chosen .opt-box svg{opacity:1;transform:scale(1)}
+
+    /* CHIPS */
+    .chips-wrap{display:flex;flex-wrap:wrap;gap:7px;margin-top:4px}
+    .chip{padding:8px 16px;border-radius:100px;background:rgba(255,255,255,.05);border:1px solid var(--border);font-size:13px;font-weight:600;color:var(--t3);cursor:pointer;user-select:none;transition:all .16s;-webkit-tap-highlight-color:transparent;min-height:36px;display:flex;align-items:center}
+    .chip:hover{background:rgba(74,166,247,.1);border-color:var(--border-h);color:var(--t1)}
+    .chip:active{transform:scale(.96)}
+    .chip.chosen{background:var(--grad);border-color:transparent;color:#fff;font-weight:700;box-shadow:0 2px 10px rgba(17,65,189,.35)}
+
+    /* BUTTONS */
+    .btn-prev{background:none;border:none;font-family:'Inter',sans-serif;font-size:13px;font-weight:600;color:var(--t3);cursor:pointer;padding:12px 16px;border-radius:var(--r-sm);transition:color .18s,background .18s,transform .18s;display:flex;align-items:center;gap:6px;min-height:44px}
+    .btn-prev:hover{color:var(--t1);background:rgba(255,255,255,.06);transform:translateX(-2px)}
+    .btn-prev.invisible{visibility:hidden;pointer-events:none}
+    .btn-next{display:flex;align-items:center;gap:10px;background:var(--grad);padding:14px 28px;font-size:15px;font-weight:700;letter-spacing:-.3px;border-radius:var(--r-md);border:none;font-family:'Inter',sans-serif;color:#fff;cursor:pointer;transition:all .2s var(--spring);box-shadow:0 4px 20px rgba(17,65,189,.45);min-height:48px}
+    .btn-next:hover{transform:translateY(-2px) scale(1.02);box-shadow:0 8px 28px rgba(17,65,189,.55)}
+    .btn-next:active{transform:translateY(1px) scale(.98)}
+    .btn-arrow{font-size:16px;transition:transform .18s var(--ease);display:inline-block}
+    .btn-next:hover .btn-arrow{transform:translateX(3px)}
+
+    /* THANK YOU */
+    .ty{display:none;position:fixed;inset:0;z-index:500;background:var(--bg);align-items:center;justify-content:center;padding:48px 24px;overflow:hidden}
+    .ty.show{display:flex;animation:fadeIn .5s var(--ease) both}
+    @keyframes fadeIn{from{opacity:0}to{opacity:1}}
+    .ty::before{content:'';position:absolute;width:600px;height:600px;border-radius:50%;background:radial-gradient(circle,rgba(17,65,189,.18) 0%,transparent 70%);top:-200px;left:50%;transform:translateX(-50%);pointer-events:none}
+    .ty-card{position:relative;z-index:1;max-width:520px;width:100%;background:rgba(10,19,48,.85);backdrop-filter:blur(28px);border:1px solid var(--border);border-radius:var(--r-xl);padding:60px 48px;text-align:center;box-shadow:0 32px 80px rgba(0,0,0,.5)}
+    .ty-ring-wrap{width:80px;height:80px;margin:0 auto 36px;position:relative}
+    .ty-ring{width:80px;height:80px;transform:rotate(-90deg)}
+    .ty-circle{fill:none;stroke:var(--lblu);stroke-width:2;stroke-dasharray:220;stroke-dashoffset:220;stroke-linecap:round;transition:none}
+    .ty.show .ty-circle{animation:drawRing .8s var(--ease) .3s forwards}
+    @keyframes drawRing{to{stroke-dashoffset:0}}
+    .ty-check{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;opacity:0;transform:scale(.5);transition:opacity .3s ease .9s,transform .4s var(--spring) .9s}
+    .ty.show .ty-check{opacity:1;transform:scale(1)}
+    .ty-headline{font-size:clamp(44px,8vw,72px);font-weight:900;letter-spacing:-3px;line-height:.95;color:#fff;margin-bottom:16px;opacity:0;transform:translateY(20px);transition:opacity .5s ease .5s,transform .5s var(--ease) .5s}
+    .ty.show .ty-headline{opacity:1;transform:translateY(0)}
+    .ty-blue{background:var(--grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+    .ty-sub{font-size:14px;color:var(--t3);line-height:1.65;max-width:340px;margin:0 auto 36px;opacity:0;transform:translateY(12px);transition:opacity .5s ease .72s,transform .5s ease .72s}
+    .ty.show .ty-sub{opacity:1;transform:translateY(0)}
+
+    /* COVER */
+    .cover-screen{position:fixed;inset:0;z-index:300;background:var(--bg);display:flex;align-items:center;justify-content:center;padding:24px;transition:opacity .45s var(--ease),transform .45s var(--ease)}
+    .cover-screen::before{content:'';position:absolute;inset:0;pointer-events:none;background:radial-gradient(ellipse 500px 400px at 80% 0%,rgba(74,166,247,.12) 0%,transparent 70%),radial-gradient(ellipse 300px 250px at 20% 100%,rgba(17,65,189,.08) 0%,transparent 70%)}
+    .cover-screen.hiding{opacity:0;transform:scale(.98);pointer-events:none}
+    .cover-card{max-width:640px;width:100%;border-radius:var(--r-xl);background:var(--bg-card);border:1px solid var(--border);box-shadow:0 32px 80px rgba(0,0,0,.5),0 0 0 1px rgba(74,166,247,.06) inset;overflow:hidden;position:relative;z-index:1;animation:enterCard .6s var(--spring) both}
+    .cover-hd{padding:40px 48px 32px;border-bottom:1px solid var(--border)}
+    .cover-badge{display:inline-flex;align-items:center;gap:6px;padding:5px 12px;border-radius:100px;background:rgba(74,166,247,.12);color:var(--lblu);font-size:10px;font-weight:800;letter-spacing:2px;text-transform:uppercase;margin-bottom:18px;border:1px solid rgba(74,166,247,.2);animation:fadeSlideUp .4s .1s ease both}
+    .cover-title{font-size:clamp(32px,5vw,52px);font-weight:900;letter-spacing:-2px;line-height:.97;color:var(--t1);margin-bottom:10px;animation:fadeSlideUp .5s .18s ease both}
+    .cover-sub{font-size:15px;color:var(--t3);line-height:1.65;animation:fadeSlideUp .5s .26s ease both}
+    .cover-body{padding:32px 48px;display:flex;flex-direction:column;gap:14px}
+    .cover-item{display:flex;align-items:flex-start;gap:14px;padding:16px 18px;border-radius:var(--r-md);background:rgba(255,255,255,.03);border:1px solid var(--border)}
+    .cover-item:nth-child(1){animation:fadeSlideUp .5s .3s ease both}
+    .cover-item:nth-child(2){animation:fadeSlideUp .5s .42s ease both}
+    .cover-item:nth-child(3){animation:fadeSlideUp .5s .54s ease both}
+    .cover-icon{width:32px;height:32px;border-radius:8px;background:var(--grad);display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px}
+    .cover-item-text{font-size:14px;color:var(--t3);line-height:1.65}
+    .cover-item-text strong{color:var(--t2);font-weight:700}
+    .cover-ft{padding:24px 48px 36px;border-top:1px solid var(--border);display:flex;flex-direction:column;gap:12px;animation:fadeSlideUp .5s .64s ease both}
+    .cover-note{font-size:12px;color:var(--t4);font-weight:500;text-align:center;line-height:1.5}
+    .cover-note strong{color:var(--t3)}
+    @keyframes fadeSlideUp{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
+
+    /* MOBILE */
+    @media(max-width:680px){
+      .header{padding:0 20px;height:56px}
+      .progress{display:none}
+      .mobile-prog{display:flex;position:sticky;top:56px;left:0;right:0;z-index:199;gap:3px;background:rgba(3,9,23,.85);backdrop-filter:blur(16px)}
+      .mobile-prog-seg{flex:1;height:3px;background:var(--border);overflow:hidden;transition:background .3s}
+      .mobile-prog-seg.done{background:var(--lblu)}
+      .mobile-prog-seg.active{background:var(--grad)}
+      .form-section{padding:12px 0 60px}
+      .section-card{border-radius:20px;margin:0 12px}
+      .section-hd{padding:28px 24px 24px}
+      .section-body{padding:28px 24px}
+      .section-ft{padding:20px 24px 24px;flex-direction:column-reverse;gap:10px}
+      .btn-next{width:100%;justify-content:center}
+      .btn-prev{justify-content:center;width:100%}
+      .opts-grid,.opts-grid.col3{grid-template-columns:1fr}
+      .ty-card{padding:40px 28px}
+      .cover-hd,.cover-body,.cover-ft{padding-left:24px;padding-right:24px}
+      .cover-title{font-size:28px}
+    }
+    @media(min-width:681px){.mobile-prog{display:none}}
+  </style>
+</head>
+<body>
+
+<!-- SPLASH -->
+<div id="splash" aria-hidden="true">
+  <img class="splash-logo" src="logo.svg" alt="Studio REVI" width="320">
+  <div class="splash-bar"><div class="splash-bar-fill"></div></div>
+</div>
+
+<!-- HEADER -->
+<header class="header">
+  <div class="logo" aria-label="Studio REVI">
+    <img src="logo.svg" alt="Studio REVI" height="28" style="width:auto;display:block">
+  </div>
+  <nav class="progress" id="hdr-progress" aria-label="Progresso"></nav>
+</header>
+
+<!-- MOBILE PROGRESS -->
+<div class="mobile-prog" id="mob-prog">
+</div>
+
+<!-- COVER -->
+<div class="cover-screen" id="cover">
+  <div class="cover-card">
+    <div class="cover-hd">
+      <div class="cover-badge">
+        <svg width="10" height="10" viewBox="0 0 10 10" fill="none" aria-hidden="true"><path d="M5 1L6.2 3.7L9 4.1L7 6L7.5 9L5 7.7L2.5 9L3 6L1 4.1L3.8 3.7Z" fill="currentColor"/></svg>
+        Briefing IV
+      </div>
+      <h1 class="cover-title">Briefing de<br>Identidade Visual</h1>
+      <p class="cover-sub">Suas respostas são a base de todo o projeto: conceito, símbolo, cores e tipografia. Quanto mais detalhes, mais certeira a marca.</p>
+    </div>
+    <div class="cover-body">
+      <div class="cover-item">
+        <div class="cover-icon"><svg width="15" height="15" viewBox="0 0 15 15" fill="none"><path d="M7.5 1.5a6 6 0 1 1 0 12 6 6 0 0 1 0-12ZM7.5 6.5v4M7.5 4.5v.5" stroke="#fff" stroke-width="1.5" stroke-linecap="round"/></svg></div>
+        <p class="cover-item-text">Se houver <strong>mais de um decisor</strong>, o ideal é que todos participem do preenchimento.</p>
+      </div>
+      <div class="cover-item">
+        <div class="cover-icon"><svg width="15" height="15" viewBox="0 0 15 15" fill="none"><rect x="2" y="2" width="11" height="11" rx="2" stroke="#fff" stroke-width="1.5"/><path d="M5 7.5h5M7.5 5v5" stroke="#fff" stroke-width="1.5" stroke-linecap="round"/></svg></div>
+        <p class="cover-item-text">Suas informações são <strong>confidenciais</strong> e não serão compartilhadas com terceiros.</p>
+      </div>
+      <div class="cover-item">
+        <div class="cover-icon"><svg width="15" height="15" viewBox="0 0 15 15" fill="none"><path d="M2 11.5L5.5 8 8 10.5 13 4" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        <p class="cover-item-text">Leva cerca de <strong>15 minutos</strong>. Seu progresso fica salvo neste navegador.</p>
+      </div>
+    </div>
+    <div class="cover-ft">
+      <button class="btn-next" onclick="startBriefing()" style="width:100%;justify-content:center;">
+        <span>Iniciar briefing</span>
+        <span class="btn-arrow" aria-hidden="true">→</span>
+      </button>
+      <p class="cover-note"><strong>Só os campos marcados são obrigatórios.</strong> Mas quanto mais detalhes, melhor o resultado.</p>
+    </div>
+  </div>
+</div>
+
+<!-- MAIN -->
+<main class="main" id="main"></main>
+
+<!-- THANK YOU -->
+<div class="ty" id="ty" role="dialog" aria-modal="true" aria-label="Briefing enviado">
+  <div class="ty-card">
+    <div class="ty-ring-wrap">
+      <svg class="ty-ring" viewBox="0 0 80 80"><circle class="ty-circle" cx="40" cy="40" r="35"/></svg>
+      <div class="ty-check" aria-hidden="true">
+        <svg width="28" height="28" viewBox="0 0 28 28" fill="none"><path d="M6 14.5L12 21L22 9" stroke="#4AA6F7" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </div>
+    </div>
+    <h1 class="ty-headline">Briefing<br><span class="ty-blue">recebido.</span></h1>
+    <p class="ty-sub">Em breve entraremos em contato pelo e-mail informado. Obrigado pela confiança!</p>
+  </div>
+</div>
+
+<script>
+/* ══ CONFIG ══ */
+// URL /exec do Google Apps Script (apps-script.gs). Vazio = usa /api/submit (Vercel).
+const ENDPOINT = '';
+
+/* ══ DATA ══ */
+const SECTIONS = [
+  { id:1, num:'01', title:'Identificação',
+    desc:'Quem está respondendo e em que momento a marca está. Se houver mais de um decisor, preencham juntos.',
+    questions:[
+      { id:'nome',    label:'Seu nome', type:'text', required:true, ph:'Nome completo' },
+      { id:'email',   label:'E-mail de contato', type:'email', required:true, ph:'seu@email.com', hint:'Onde enviamos o briefing compilado e entramos em contato' },
+      { id:'funcao',  label:'Sua função na empresa', type:'text', ph:'Ex: sócio-fundador, diretora de marketing...', hint:'Se houver outros decisores participando, informe a função de cada um' },
+      { id:'marca',   label:'Nome da marca que será desenvolvida', type:'text', required:true, ph:'Ex: Studio REVI' },
+      { id:'momento', label:'Qual o momento atual da marca?', type:'radio', required:true, cols:1,
+        opts:['Empresa nova, a marca ainda não existe','Empresa em funcionamento, sem identidade visual profissional','Redesign de uma marca que já existe','Reposicionamento (mudar como o mercado nos enxerga)'] },
+      { id:'estrutura', label:'Tamanho da empresa', type:'radio', required:true,
+        opts:['MEI (somente eu)','Pequena (2 a 12 pessoas)','Média (13 a 40 pessoas)','Grande (mais de 40 pessoas)'] },
+    ]
+  },
+  { id:2, num:'02', title:'A Empresa',
+    desc:'A história, o nome e o propósito são a matéria-prima do conceito da marca.',
+    questions:[
+      { id:'origem',    label:'Como e por que a empresa nasceu?', type:'textarea', ph:'O que te motivou a abrir o negócio? Se a empresa ou algum produto tiver uma história marcante, conte resumidamente.' },
+      { id:'nomesig',   label:'Por que a marca tem esse nome? O que ele significa pra você?', type:'textarea', ph:'Origem do nome, significado, homenagem, trocadilho...' },
+      { id:'segmento',  label:'Segmento de atuação', type:'text', required:true, ph:'Ex: estética, advocacia, alimentação saudável...' },
+      { id:'produtos',  label:'Quais produtos ou serviços a empresa oferece?', type:'textarea', required:true, ph:'Liste os principais e, se tiver, o carro-chefe.' },
+      { id:'diferencial', label:'O que torna sua empresa especial?', type:'textarea', ph:'Por que um cliente escolhe vocês e não o concorrente?' },
+      { id:'proposito', label:'Qual o propósito da empresa? (missão, visão e valores, se tiver)', type:'textarea',
+        ph:'Ex: o propósito da Disney é encantar através de uma experiência mágica. O da Apple é desafiar o status quo.' },
+      { id:'slogan',    label:'A empresa tem slogan? Se sim, qual?', type:'text', ph:'Deixe em branco se não tiver' },
+      { id:'futuro',    label:'A empresa pode atuar em outros segmentos no futuro? Quais?', type:'text', ph:'Ex: hoje é clínica, no futuro pode ter linha de cosméticos', hint:'Ajuda a criar uma marca que não fique pequena demais para o que vem depois' },
+      { id:'importancia', label:'Por que esse projeto de identidade visual é importante agora?', type:'textarea', ph:'O que você espera que mude com a nova marca?' },
+    ]
+  },
+  { id:3, num:'03', title:'Mercado',
+    desc:'Olhar a concorrência mostra o que evitar e onde existe espaço para se diferenciar.',
+    questions:[
+      { id:'concorrentes', label:'Quem são seus principais concorrentes?', type:'textarea', ph:'1. Nome — @instagram ou site\n2. Nome — @instagram ou site\n3. ...', hint:'Se puder, comente o que eles fazem bem ou mal' },
+      { id:'players',     label:'Quais as marcas de maior destaque no seu segmento?', type:'textarea', ph:'Os grandes nomes do mercado, mesmo que não sejam concorrentes diretos' },
+    ]
+  },
+  { id:4, num:'04', title:'Público-alvo',
+    desc:'A marca precisa falar com alguém específico. Quanto mais preciso o retrato, mais certeira a identidade.',
+    questions:[
+      { id:'publico', label:'Quem é o seu cliente ideal?', type:'textarea', required:true,
+        ph:'Profissão, estilo de vida, hobbies, lugares que frequenta, marcas que consome, medos e desejos...' },
+      { id:'dor',     label:'Qual a principal dor desse público e como sua empresa resolve?', type:'textarea' },
+      { id:'idade',   label:'Faixa etária', type:'checkbox', required:true, hint:'Marque todas que se aplicam',
+        opts:['Até 17','18 a 24','25 a 34','35 a 44','45 a 59','60+'] },
+      { id:'genero',  label:'Gênero', type:'radio', required:true, cols:1,
+        opts:['Totalmente feminino','Predominantemente feminino','Ambos os gêneros','Predominantemente masculino','Totalmente masculino'] },
+      { id:'classe',  label:'Classe social', type:'checkbox', required:true, hint:'Marque todas que se aplicam', cols:1,
+        opts:['A — acima de 15 salários mínimos','B — de 5 a 15 salários mínimos','C — de 3 a 5 salários mínimos','D — de 1 a 3 salários mínimos','E — até 1 salário mínimo'] },
+      { id:'descrever',   label:'Como você gostaria que os clientes descrevessem sua marca?', type:'textarea', required:true,
+        ph:'O que você gostaria de ouvir quando um cliente recomenda vocês a um amigo?' },
+      { id:'naodescrever', label:'E como você NÃO quer que ela seja vista?', type:'textarea', required:true,
+        ph:'Sentimentos ou atributos que você não quer associados à marca. Ex: cara, fria, amadora, infantil...' },
+    ]
+  },
+  { id:5, num:'05', title:'Personalidade',
+    desc:'Se a sua marca fosse uma pessoa, como ela seria? Primeiro o jeito de ser, depois a aparência.',
+    questions:[
+      { id:'personalidade', label:'Jeito de ser: escolha os traços que combinam com a marca', type:'chips', required:true, hint:'Escolha quantos quiser',
+        opts:['Acessível','Acolhedora','Alegre','Analítica','Artística','Atual','Aventureira','Calma','Casual','Científica','Confiável','Conservadora','Criativa','Curiosa','Determinada','Disciplinada','Discreta','Divertida','Elegante','Emocional','Energética','Exclusiva','Extrovertida','Futurista','Idealista','Intuitiva','Irreverente','Líder','Madura','Moderna','Nostálgica','Ousada','Profissional','Racional','Rebelde','Refinada','Reservada','Romântica','Rústica','Sábia','Séria','Simples','Sofisticada','Técnica','Tradicional'] },
+      { id:'personalidade3', label:'Desses traços, quais são os 3 mais fortes?', type:'top3', from:'personalidade', required:true },
+      { id:'visual', label:'Aparência: quais atributos visuais têm a ver com a marca?', type:'chips', required:true, hint:'Pense só no visual: cores, formas, letras',
+        opts:['Aconchegante','Clean','Delicada','Digital','Elegante','Extravagante','Formal','Humana','Leve','Minimalista','Moderna','Nobre','Orgânica','Ousada','Pesada','Popular','Retrô','Romântica','Rústica','Séria','Sofisticada','Tradicional','Vibrante'] },
+      { id:'visual3', label:'Desses atributos visuais, quais são os 3 mais fortes?', type:'top3', from:'visual', required:true },
+    ]
+  },
+  { id:6, num:'06', title:'Visual & Aplicações',
+    desc:'Preferências, restrições e onde a marca vai viver. Tudo aqui é ponto de partida, não regra.',
+    questions:[
+      { id:'cores',        label:'Tem alguma cor em mente?', type:'text', ph:'Ex: verde-musgo, tons terrosos...', hint:'É uma sugestão: a paleta final passa pela estratégia' },
+      { id:'coresevitar',  label:'Alguma cor que você não quer?', type:'text', ph:'Ex: nada de rosa, evitar vermelho...' },
+      { id:'elementos',    label:'Algum elemento que você quer na marca?', type:'text', ph:'Ex: uma folha, a inicial do nome, um símbolo da cidade...' },
+      { id:'elementosevitar', label:'Algum elemento que você não quer?', type:'text', ph:'Ex: nada de coração, sem mascote...' },
+      { id:'manter',       label:'Projeto de redesign: há algo da marca atual que você quer manter?', type:'text', ph:'Ex: a cor azul, o símbolo, o formato do nome...', hint:'Deixe em branco se a marca é nova' },
+      { id:'referencias',  label:'Marcas que você admira visualmente (dentro ou fora do seu segmento)', type:'textarea',
+        ph:'1. Marca — o que você gosta nela\n2. Marca — o que você gosta nela\n3. ...', hint:'Diga o que te atrai em cada uma: cor, logo, tipografia, embalagem...' },
+      { id:'aplicacoes',   label:'Onde a marca vai aparecer?', type:'chips', required:true, hint:'Selecione todos os pontos de contato',
+        opts:['Instagram','TikTok','YouTube','Site','WhatsApp','Google (perfil da empresa)','Fachada','Embalagem','Rótulo','Uniforme','Cartão de visita','Papelaria','Crachá','Veículo','Material impresso','Eventos / stand','Brindes'] },
+      { id:'prioridade',   label:'Quais desses pontos são os mais importantes?', type:'text', ph:'Ex: 1. Instagram, 2. embalagem, 3. fachada', hint:'Em ordem de importância: é onde a marca precisa funcionar melhor' },
+      { id:'arquivos',     label:'Link com arquivos', type:'text', ph:'https://drive.google.com/...', hint:'Logo atual, fotos, referências que você já salvou' },
+    ]
+  },
+  { id:7, num:'07', title:'Finalização',
+    desc:'Última etapa. Adicione qualquer informação que não foi coberta acima.',
+    questions:[
+      { id:'extra', label:'Considerações finais', type:'textarea', ph:'Fique à vontade para contar mais sobre a empresa ou qualquer coisa que considere importante.' },
+    ]
+  }
+];
+
+/* ══ SHALLOW DETECTION CONFIG ══ */
+const SHALLOW_CONFIG = {
+  publico:     { minWords: 15 },
+  diferencial: { minWords: 10 },
+  descrever:   { minWords: 6  },
+  naodescrever:{ minWords: 5  },
+  concorrentes:{ minLines: 2  },
+};
+
+function getShallowMessage(id, value){
+  const t = value.trim();
+  const preview = t.length > 65 ? t.slice(0,65).trimEnd()+'...' : t;
+  switch(id){
+    case 'publico': {
+      const miss=[];
+      if(!/profiss|trabalha|empres|médic|advog|mãe|pai|estudante|aposentad/i.test(t)) miss.push('profissão ou ocupação');
+      if(!/gosta|hobby|frequenta|consome|estilo|viaja|academia|música/i.test(t)) miss.push('estilo de vida e gostos');
+      if(!/medo|dor|problema|deseja|quer|sonha|busca/i.test(t)) miss.push('medos e desejos');
+      if(!miss.length) return null;
+      return { title:'⚠️ Retrato do cliente vago', detail:`"${preview}" — adicione: ${miss.join(', ')}. É isso que define o tom visual da marca.` };
+    }
+    case 'diferencial':
+      return { title:'⚠️ Diferencial pouco claro', detail:`"${preview}" — o que só vocês fazem, ou fazem melhor? Ex: atendimento, rapidez, técnica, preço, história.` };
+    case 'descrever':
+      return { title:'⚠️ Detalhe um pouco mais', detail:`"${preview}" — imagine o cliente indicando vocês. Ex: "atendimento impecável, sofisticada mas acessível, dá pra confiar".` };
+    case 'naodescrever':
+      return { title:'⚠️ Seja mais específico', detail:`"${preview}" — quanto mais claro o que evitar, menos retrabalho. Ex: "não quero parecer cara, nem infantil, nem genérica".` };
+    case 'concorrentes': {
+      const n = t.split('\n').filter(l=>l.trim().length>0).length;
+      return { title:'⚠️ Poucos concorrentes', detail:`Você citou ${n}. Liste ao menos 2 ou 3, com @ ou site, para analisarmos o visual do mercado.` };
+    }
+  }
+  return null;
+}
+
+const shallowDismissed = new Set();
+const shallowTimers    = {};
+
+/* ══ STATE ══ */
+let curSec = 0;
+const ans  = {};
+
+/* ══ UTILS ══ */
+function esc(s){ return String(s).replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+function pad(n){ return String(n).padStart(2,'0'); }
+
+/* ══ RENDER ══ */
+function renderAll(){
+  document.getElementById('main').innerHTML = SECTIONS.map((s,i)=>renderSection(s,i)).join('');
+  document.getElementById('mob-prog').innerHTML = SECTIONS.map((s,i)=>`<div class="mobile-prog-seg" id="mp-${i}"></div>`).join('');
+  renderProgress();
+}
+
+function renderSection(sec, si){
+  const isFirst = si===0, isLast = si===SECTIONS.length-1;
+  return `<section class="form-section ${si===0?'active':''}" id="sec-${si}">
+    <div class="section-card">
+      <header class="section-hd" data-num="${sec.num}">
+        <p class="section-eyebrow">Seção ${sec.num} de ${pad(SECTIONS.length)}</p>
+        <h2 class="section-title">${sec.title}</h2>
+        <p class="section-desc">${sec.desc}</p>
+      </header>
+      <div class="section-body"><div class="questions">
+        ${sec.questions.map(q=>renderQuestion(q)).join('')}
+      </div></div>
+      <footer class="section-ft">
+        <button class="btn-prev ${isFirst?'invisible':''}" onclick="goSec(-1)" aria-label="Seção anterior">← Anterior</button>
+        <button class="btn-next" onclick="goSec(1)">
+          <span>${isLast?'Enviar briefing':'Próxima seção'}</span>
+          <span class="btn-arrow" aria-hidden="true">${isLast?'✓':'→'}</span>
+        </button>
+      </footer>
+    </div>
+  </section>`;
+}
+
+function renderQuestion(q){
+  const hint = q.hint ? `<p class="q-hint">${q.hint}</p>` : '';
+  const req  = q.required ? `<span class="q-req">obrigatório</span>` : '';
+  let input  = '';
+
+  if(q.type==='text'||q.type==='email'){
+    input = `<input class="field" id="fi-${q.id}" type="${q.type}"
+      placeholder="${esc(q.ph||'')}" value="${esc(ans[q.id]||'')}"
+      oninput="saveF('${q.id}',this.value)" autocomplete="off" spellcheck="false">`;
+
+  } else if(q.type==='textarea'){
+    const cfg = SHALLOW_CONFIG[q.id];
+    const shEl = cfg ? `<div class="shallow-hint" id="shallow-${q.id}">
+      <div class="shallow-icon">⚠️</div>
+      <div class="shallow-content">
+        <p class="shallow-msg"></p>
+        <p class="shallow-ex"></p>
+      </div>
+      <button class="shallow-close" onclick="dismissShallow('${q.id}')" aria-label="Fechar dica">×</button>
+    </div>` : '';
+    input = `<textarea class="field" id="fi-${q.id}" rows="5"
+      placeholder="${esc(q.ph||'')}"
+      oninput="saveF('${q.id}',this.value)"
+      spellcheck="false">${esc(ans[q.id]||'')}</textarea>${shEl}`;
+
+  } else if(q.type==='radio'){
+    const cls = q.cols===1?'col1':q.cols===3?'col3':'';
+    input = `<div class="opts-grid ${cls}" role="group">${
+      q.opts.map(o=>`<div class="opt-card ${ans[q.id]===o?'chosen':''}" data-qid="${q.id}" data-val="${esc(o)}"
+        onclick="pickR(this)" role="radio" aria-checked="${ans[q.id]===o}" tabindex="0">
+        <div class="opt-radio" aria-hidden="true"><div class="opt-radio-dot"></div></div>
+        <span class="opt-label">${esc(o)}</span>
+      </div>`).join('')
+    }</div>`;
+
+  } else if(q.type==='checkbox'){
+    const sel = ans[q.id]||[];
+    input = `<div class="opts-grid ${q.cols===1?'col1':''}" role="group">${
+      q.opts.map(o=>`<div class="opt-card ${sel.includes(o)?'chosen':''}" data-qid="${q.id}" data-val="${esc(o)}"
+        onclick="pickC(this)" role="checkbox" aria-checked="${sel.includes(o)}" tabindex="0">
+        <div class="opt-box" aria-hidden="true"><svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M1.5 5L4 7.5L8.5 2.5" stroke="var(--lblu)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        <span class="opt-label">${esc(o)}</span>
+      </div>`).join('')
+    }</div>`;
+
+  } else if(q.type==='chips'){
+    const sel = ans[q.id]||[];
+    input = `<div class="chips-wrap" role="group">${
+      q.opts.map(o=>`<div class="chip ${sel.includes(o)?'chosen':''}" data-qid="${q.id}" data-val="${esc(o)}"
+        onclick="pickCh(this)" role="checkbox" aria-checked="${sel.includes(o)}" tabindex="0">${esc(o)}</div>`).join('')
+    }</div>`;
+  } else if(q.type==='top3'){
+    input = `<div class="chips-wrap" role="group" id="top3-${q.id}">${renderTop3(q)}</div>`;
+  }
+
+  return `<div class="question">
+    <div class="q-label-row">
+      <label class="q-label" for="fi-${q.id}">${q.label}</label>${req}
+    </div>
+    ${hint}${input}
+    <p class="err-msg" id="err-${q.id}" role="alert"></p>
+  </div>`;
+}
+
+function renderTop3(q){
+  const pool = ans[q.from]||[];
+  const sel  = (ans[q.id]||[]).filter(v=>pool.includes(v));
+  ans[q.id] = sel;
+  if(!pool.length) return `<p class="q-hint" style="margin:0">Selecione os traços na pergunta acima primeiro.</p>`;
+  return pool.map(o=>`<div class="chip ${sel.includes(o)?'chosen':''}" data-qid="${q.id}" data-val="${esc(o)}"
+    onclick="pickTop3(this)" role="checkbox" aria-checked="${sel.includes(o)}" tabindex="0">${esc(o)}</div>`).join('')
+    + `<p class="q-hint" style="width:100%;margin:6px 0 0">${sel.length} de 3 escolhidos</p>`;
+}
+function refreshTop3(fromId){
+  SECTIONS.forEach(s=>s.questions.forEach(q=>{
+    if(q.type==='top3'&&q.from===fromId){
+      const el=document.getElementById(`top3-${q.id}`);
+      if(el) el.innerHTML=renderTop3(q);
+    }
+  }));
+}
+function pickTop3(el){
+  const {qid,val}=el.dataset;
+  const sel=ans[qid]||(ans[qid]=[]);
+  const i=sel.indexOf(val);
+  if(i!==-1) sel.splice(i,1);
+  else if(sel.length<3) sel.push(val);
+  else { showErr(qid,'Você já escolheu 3. Desmarque um para trocar.'); return; }
+  clearErr(qid);
+  const q=SECTIONS.flatMap(s=>s.questions).find(x=>x.id===qid);
+  document.getElementById(`top3-${qid}`).innerHTML=renderTop3(q);
+  save();
+}
+
+function renderProgress(){
+  const el = document.getElementById('hdr-progress');
+  if(el) el.innerHTML = SECTIONS.map((s,i)=>`${i>0?'<div class="prog-sep"></div>':''}
+    <div class="prog-pill ${i<curSec?'done':''} ${i===curSec?'active':''}">${s.num}</div>`).join('');
+  for(let i=0;i<SECTIONS.length;i++){
+    const seg = document.getElementById(`mp-${i}`);
+    if(!seg) continue;
+    seg.className='mobile-prog-seg';
+    if(i<curSec) seg.classList.add('done');
+    else if(i===curSec) seg.classList.add('active');
+  }
+}
+
+/* ══ SHALLOW ══ */
+function checkShallow(id, value){
+  if(shallowDismissed.has(id)) return;
+  const cfg = SHALLOW_CONFIG[id];
+  if(!cfg) return;
+  const el = document.getElementById(`shallow-${id}`);
+  if(!el) return;
+  let shallow = false;
+  if(cfg.minLines){
+    const lines = value.trim().split('\n').filter(l=>l.trim().length>0);
+    shallow = value.trim().length>0 && lines.length < cfg.minLines;
+  } else {
+    const words = value.trim().split(/\s+/).filter(Boolean).length;
+    shallow = value.trim().length>0 && words < cfg.minWords;
+  }
+  if(shallow){
+    const msg = getShallowMessage(id, value);
+    if(msg){
+      const titleEl = el.querySelector('.shallow-msg');
+      const detailEl = el.querySelector('.shallow-ex');
+      if(titleEl)  titleEl.textContent  = msg.title;
+      if(detailEl) detailEl.textContent = msg.detail;
+      el.classList.add('show');
+    } else {
+      el.classList.remove('show');
+    }
+  } else {
+    el.classList.remove('show');
+  }
+}
+
+function dismissShallow(id){
+  shallowDismissed.add(id);
+  const el = document.getElementById(`shallow-${id}`);
+  if(el) el.classList.remove('show');
+}
+
+/* ══ INTERACTIONS ══ */
+function pickR(el){
+  const card = el.closest('[data-qid]'); if(!card) return;
+  const {qid,val} = card.dataset;
+  ans[qid]=val;
+  document.querySelectorAll(`.opt-card[data-qid="${qid}"]`).forEach(c=>{c.classList.remove('chosen');c.setAttribute('aria-checked','false');});
+  card.classList.add('chosen'); card.setAttribute('aria-checked','true');
+  clearErr(qid); save();
+}
+function pickC(el){
+  const card = el.closest('[data-qid]'); if(!card) return;
+  const {qid,val} = card.dataset;
+  if(!ans[qid]) ans[qid]=[];
+  const i=ans[qid].indexOf(val);
+  if(i===-1){ans[qid].push(val);card.classList.add('chosen');card.setAttribute('aria-checked','true');}
+  else{ans[qid].splice(i,1);card.classList.remove('chosen');card.setAttribute('aria-checked','false');}
+  clearErr(qid); refreshTop3(qid); save();
+}
+function pickCh(el){ pickC(el); }
+
+function saveF(id,val){
+  ans[id]=val; save();
+  if(SHALLOW_CONFIG[id]){
+    clearTimeout(shallowTimers[id]);
+    shallowTimers[id]=setTimeout(()=>checkShallow(id,val),1500);
+  }
+}
+
+document.addEventListener('keydown',e=>{
+  if(e.key===' '||e.key==='Enter'){
+    const t=e.target;
+    if(t.classList.contains('opt-card')||t.classList.contains('chip')){e.preventDefault();t.click();}
+  }
+});
+
+/* ══ VALIDATION ══ */
+function validateSec(idx){
+  const sec=SECTIONS[idx]; let ok=true;
+  sec.questions.forEach(q=>{
+    if(!q.required) return;
+    const fi=document.getElementById(`fi-${q.id}`);
+    let val='';
+    if(fi){val=fi.value.trim();ans[q.id]=val;}
+    else if(q.type==='radio') val=ans[q.id]||'';
+    else val=(ans[q.id]||[]).length?'ok':'';
+    let msg='';
+    if(!val) msg = q.type==='top3' ? 'Escolha 3 opções' : (Array.isArray(ans[q.id])||['chips','checkbox'].includes(q.type)) ? 'Selecione ao menos uma opção' : 'Este campo é obrigatório';
+    else if(q.type==='top3'&&ans[q.id].length<3&&(ans[q.from]||[]).length>=3) msg='Escolha 3 opções';
+    else if(q.type==='email'&&!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(val)) msg='Insira um e-mail válido';
+    showErr(q.id,msg);
+    if(fi) fi.classList.toggle('has-error',!!msg);
+    if(msg) ok=false;
+  });
+  return ok;
+}
+function showErr(id,msg){const el=document.getElementById(`err-${id}`);if(!el)return;el.textContent=msg;el.classList.toggle('show',!!msg);}
+function clearErr(id){showErr(id,'');}
+
+/* ══ NAVIGATION ══ */
+function goSec(dir){
+  if(dir===1&&!validateSec(curSec)){
+    const e=document.querySelector(`#sec-${curSec} .err-msg.show`);
+    if(e) e.closest('.question').scrollIntoView({behavior:'smooth',block:'center'});
+    return;
+  }
+  if(dir===1&&curSec===SECTIONS.length-1){submitForm();return;}
+  const next=curSec+dir;
+  if(next<0||next>=SECTIONS.length) return;
+  const cEl=document.getElementById(`sec-${curSec}`);
+  const nEl=document.getElementById(`sec-${next}`);
+  cEl.classList.add(dir===1?'slide-out-left':'slide-out-right');
+  setTimeout(()=>{
+    cEl.classList.remove('active','slide-out-left','slide-out-right');
+    nEl.classList.add('active',dir===1?'slide-in-right':'slide-in-left');
+    setTimeout(()=>nEl.classList.remove('slide-in-right','slide-in-left'),400);
+    window.scrollTo({top:0,behavior:'smooth'});
+  },280);
+  curSec=next; renderProgress(); save();
+}
+
+/* ══ SUBMIT ══ */
+async function submitForm(){
+  SECTIONS.forEach(sec=>sec.questions.forEach(q=>{
+    const fi=document.getElementById(`fi-${q.id}`);
+    if(fi) ans[q.id]=fi.value.trim();
+  }));
+  save();
+  document.getElementById('ty').classList.add('show');
+  document.body.style.overflow='hidden';
+  try {
+    const viaScript = !!ENDPOINT;
+    await fetch(viaScript ? ENDPOINT : '/api/submit',{
+      method:'POST',
+      // text/plain evita o preflight de CORS, que o Apps Script não responde
+      headers:{'Content-Type': viaScript ? 'text/plain;charset=utf-8' : 'application/json'},
+      ...(viaScript ? {mode:'no-cors'} : {}),
+      body:JSON.stringify({
+        answers: ans,
+        sections: SECTIONS.map(s=>({num:s.num,title:s.title,questions:s.questions.map(q=>({id:q.id,label:q.label}))}))
+      })
+    });
+  } catch(e){ console.error(e); }
+}
+
+/* ══ STORAGE ══ */
+function save(){ try{localStorage.setItem('studiorevi_iv_briefing',JSON.stringify({ans,curSec}));}catch(e){} }
+function load(){
+  try{
+    const d=JSON.parse(localStorage.getItem('studiorevi_iv_briefing')||'{}');
+    if(d.ans) Object.assign(ans,d.ans);
+    if(typeof d.curSec==='number') curSec=d.curSec;
+  }catch(e){}
+}
+
+/* ══ COVER ══ */
+function startBriefing(){
+  Object.keys(ans).forEach(k=>delete ans[k]);
+  curSec=0;
+  try{localStorage.removeItem('studiorevi_iv_briefing');}catch(e){}
+  renderAll();
+  const cover=document.getElementById('cover');
+  cover.classList.add('hiding');
+  setTimeout(()=>{cover.style.display='none';},450);
+}
+
+/* ══ INIT ══ */
+load();
+renderAll();
+if(curSec>0){
+  document.getElementById('sec-0').classList.remove('active');
+  document.getElementById(`sec-${curSec}`).classList.add('active');
+}
+setTimeout(()=>document.getElementById('splash').classList.add('fade-out'),1600);
+</script>
+</body>
+</html>
